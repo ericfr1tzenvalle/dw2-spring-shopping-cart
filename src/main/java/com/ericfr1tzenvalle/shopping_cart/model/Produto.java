@@ -26,13 +26,24 @@ public class Produto {
     private String descricao;
     @Positive (message = "O preço tem que ser maior que zero")
     private double preco;
-    
+
     public Produto(String nome, String descricao, double preco){
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
-        
-        
+
+
+    }
+
+    public Produto() {
+
+    }
+
+    public Produto(long l, String nome, String descricao, double preco) {
+        this.id=l;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
     }
 
     public Long getId() {
@@ -66,8 +77,8 @@ public class Produto {
     public void setPreco(double preco) {
         this.preco = preco;
     }
-    
-    
-    
-    
+
+
+
+
 }

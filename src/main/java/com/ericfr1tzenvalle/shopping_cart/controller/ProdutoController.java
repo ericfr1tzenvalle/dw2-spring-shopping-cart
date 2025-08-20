@@ -25,12 +25,14 @@ public class ProdutoController {
     
     @Autowired
     private ProdutoRepository repository;
+
+
     
     
     @GetMapping("/produtos")
     public String listarProdutos(Model model){
         model.addAttribute("produtos", repository.getProdutos());
-        return "listar_produtos";
+        return "produtos";
         
     }
     
@@ -53,4 +55,3 @@ public class ProdutoController {
     
     
 }
-

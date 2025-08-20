@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrrinho</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+
+    body {
+        background-color: #c0392b;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #menu {
+        background-color: #2c3e50;
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        padding: 20px 0;
+        list-style: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        border-radius: 0 0 10px 10px;
+    }
+
+    .menu-item a {
+        font-size: 22px;
+        color: #e8e8e8;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 6px;
+        transition: 0.3s ease;
+    }
+
+    .menu-item a:hover {
+        background-color: #c0392b;
+        color: #fff;
+    }
+
+    .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 40px 15px;
+    }
+
+    .produtos-container {
+        width: 100%;
+        max-width: 1100px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    #carrinho-vazio {
+        text-align: center;
+        font-size: 32px;
+        color: #c0392b;
+        padding: 80px 0;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 16px;
+        table-layout: fixed;
+    }
+
+    thead {
+        background-color: #2c3e50;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+        vertical-align: middle;
+        word-wrap: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f1f1;
+        transition: 0.3s ease;
+    }
+
+    td img {
+        width: 80px;
+        margin-top: 5px;
+        border-radius: 6px;
+    }
+
+    tfoot td {
+        font-weight: bold;
+        background-color: #ecf0f1;
+        font-size: 17px;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 768px) {
+        th, td {
+            padding: 12px;
+            font-size: 14px;
+        }
+        td img {
+            width: 60px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .produtos-container {
+            padding: 20px;
+        }
+        table {
+            font-size: 12px;
+        }
+        #carrinho-vazio {
+            font-size: 26px;
+            padding: 50px 0;
+        }
+        td img {
+            width: 50px;
+        }
+    }
+</style>
+
+<body>
+<header>
+    <nav>
+        <ol id="menu">
+            <li class="menu-item"><a th:href="@{/produtos}" style="text-decoration: none;">Produtos</a></li>
+            <li class="menu-item"><a th:href="@{/carrinho/exibir}" style="text-decoration: none;">Carrinho</a></li>
+            <li class="menu-item"><a href="#" style="text-decoration: none;">Contato</a></li>
+        </ol>
+    </nav>
+</header>
+
+<div class="main-container">
+    <div class="produtos-container">
+       <div th:if="${carrinho.itens.isEmpty()}" id="carrinho-vazio">
+           <h1 style="color: white">Carrinho vazio</h1>
+       </div>
+       <div th:if="${!carrinho.itens.isEmpty()}">
+           <table>
+               <thead>
+               <tr>
+                   <th>Produto</th>
+                   <th>Preço Unitario</th>
+                   <th>Quantidade</th>
+                   <th>Subtotal</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="item: ${carrinho.itens}">
+                   <td>
+                       <span th:text="${item.produto.nome}">Nome do produto</span>
+                       <br>
+                       <img th:src="@{/imgs/{nome}.jpg(nome=${item.produto.nome})}" alt="produto" style="width: 80px; margin-top:5px; border-radius:5px;">
+                   </td>
+
+                   <td th:text="${#numbers.formatCurrency(item.produto.preco)}">Preço Unitario</td>
+                   <td th:text="${item.quantidade}">Quantidade</td>
+                   <td th:text="${#numbers.formatCurrency(item.produto.preco * item.quantidade)}">Subtotal</td>
+               </tr>
+               <tr>
+                   <td colspan="2">Total</td>
+                   <td th:text="${carrinho.quantidadeTotal}">1</td>
+                   <td th:text="${#numbers.formatCurrency(carrinho.precoTotal)}">10.00</td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+
+    </div>
+</div>
+
+</body>
+</html>

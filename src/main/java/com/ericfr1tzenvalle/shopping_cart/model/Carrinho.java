@@ -5,13 +5,11 @@ import java.util.List;
 
 public class Carrinho {
     private List<ItemCarrinho> itens;
-    private double precoTotal;
-    private int quantidadeTotal;
+
     
     public Carrinho() {
         this.itens = new ArrayList<ItemCarrinho>();
-        this.precoTotal = 0;
-        this.quantidadeTotal = 0;
+
     }
     public List<ItemCarrinho> getItens() {
         return itens;
@@ -34,21 +32,11 @@ public class Carrinho {
         return null;
     }
     public double getPrecoTotal() {
-        double precoTotal = 0;
-        for(ItemCarrinho item : itens) {
-            precoTotal += item.getProduto().getPreco() * item.getQuantidade();
-        }
-        return precoTotal;
+        return itens.stream().mapToDouble(item -> item.getProduto().getPreco() * item.getQuantidade()).sum();
     }
-    public void setPrecoTotal(double precoTotal) {
-        this.precoTotal = precoTotal;
-    }
+
     public int getQuantidadeTotal() {
-        int quantidadeTotal = 0;
-        for(ItemCarrinho item : itens) {
-            quantidadeTotal += item.getQuantidade();
-        }
-        return quantidadeTotal;
+        return itens.stream().mapToInt(ItemCarrinho::getQuantidade).sum();
     }
     
 }
